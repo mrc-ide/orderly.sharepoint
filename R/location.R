@@ -1,3 +1,13 @@
+##' @name outpack_location_sharepoint
+##' @rdname outpack_location_sharepoint
+##' @title Outpack Location for Sharepoint
+##'
+##' @description A driver to put outpack/orderly2 archives on
+##'   Sharepoint. Individual methods are not documented here as this
+##'   just needs to satisfy the interface required by outpack/orderly2
+##'   and is not for direct user use. See
+##'   [orderly2::outpack_location_add] for details.
+##'
 ##' @export
 outpack_location_sharepoint <- R6::R6Class(
   "outpack_location_sharepoint",
@@ -7,6 +17,14 @@ outpack_location_sharepoint <- R6::R6Class(
   ),
 
   public = list(
+    ##' @param url The base url of your Office365/Sharepoint site, such
+    ##' as `https://myorg.sharepoint.com` (the `https://` prefix is required)
+    ##'
+    ##' @param `site` Your site name on Sharepoint
+    ##'
+    ##' @param path The path within your site name where documents will
+    ##' be stored (you may need `Shared Documents` even if Sharepoint
+    ##' makes it look like `Documents`
     initialize = function(url, site, path) {
       private$folder <- outpack_sharepoint_folder_cached(url, site, path)
     },
@@ -78,9 +96,6 @@ outpack_location_sharepoint <- R6::R6Class(
   ))
 
 
-## Seems hard to mock the whole class out, which I think validates my
-## general approach of exposing free constructor!
-## https://github.com/r-lib/mockery/issues/21
 outpack_sharepoint_client <- function(url) {
   spud::sharepoint$new(url) # nocov
 }
