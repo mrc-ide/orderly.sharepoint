@@ -22,5 +22,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Remotes:
-    mrc-ide/orderly2@mrc-4379,
+    mrc-ide/orderly2,
     reside-ic/spud
