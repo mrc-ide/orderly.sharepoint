@@ -1,22 +1,22 @@
-# outpack.sharepoint
+# orderly.sharepoint
 
 <!-- badges: start -->
 [![Project Status: Concept – Minimal or no implementation has been done yet, or the repository is only intended to be a limited example, demo, or proof-of-concept.](https://www.repostatus.org/badges/latest/concept.svg)](https://www.repostatus.org/#concept)
-[![R build status](https://github.com/mrc-ide/outpack.sharepoint/workflows/R-CMD-check/badge.svg)](https://github.com/mrc-ide/outpack.sharepoint/actions)
-[![codecov.io](https://codecov.io/github/mrc-ide/outpack.sharepoint/coverage.svg?branch=main)](https://codecov.io/github/mrc-ide/outpack.sharepoint?branch=main)
+[![R build status](https://github.com/mrc-ide/orderly.sharepoint/workflows/R-CMD-check/badge.svg)](https://github.com/mrc-ide/orderly.sharepoint/actions)
+[![codecov.io](https://codecov.io/github/mrc-ide/orderly.sharepoint/coverage.svg?branch=main)](https://codecov.io/github/mrc-ide/orderly.sharepoint?branch=main)
 <!-- badges: end -->
 
-Similar to [orderly.sharepoint](https://github.com/vimc/orderly.sharepoint), but for [orderly2](https://mrc-ide.github.io/orderly2), which is based on outpack.
+Similar to [orderly.sharepoint](https://github.com/vimc/orderly.sharepoint), but for [orderly2](https://mrc-ide.github.io/orderly2), which is based on orderly.
 
 To configure, add a location:
 
 ```
-orderly2::outpack_location_add(
+orderly2::orderly_location_add(
   "my-sharepoint-location",
-  list(driver = "outpack.sharepoint::outpack_location_sharepoint",
+  list(driver = "orderly.sharepoint::orderly_location_sharepoint",
        url = "https://example.sharepoint.com",
        site = "mysite",
-       path = "Shared Documents/outpack/real")
+       path = "Shared Documents/orderly/real")
 ```
 
 where
@@ -31,10 +31,10 @@ These are the same arguments and interpretationas in `orderly.sharepoint`.
 
 ## Installation
 
-To install `outpack.sharepoint`:
+To install `orderly.sharepoint`:
 
 ```r
-remotes::install_github("mrc-ide/outpack.sharepoint", upgrade = FALSE)
+remotes::install_github("mrc-ide/orderly.sharepoint", upgrade = FALSE)
 ```
 
 ## License

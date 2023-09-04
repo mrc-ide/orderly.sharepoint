@@ -1,16 +1,16 @@
-##' @name outpack_location_sharepoint
-##' @rdname outpack_location_sharepoint
-##' @title Outpack Location for Sharepoint
+##' @name orderly_location_sharepoint
+##' @rdname orderly_location_sharepoint
+##' @title Orderly Location for Sharepoint
 ##'
-##' @description A driver to put outpack/orderly2 archives on
+##' @description A driver to put orderly/orderly2 archives on
 ##'   Sharepoint. Individual methods are not documented here as this
-##'   just needs to satisfy the interface required by outpack/orderly2
+##'   just needs to satisfy the interface required by orderly/orderly2
 ##'   and is not for direct user use. See
-##'   [orderly2::outpack_location_add] for details.
+##'   [orderly2::orderly_location_add] for details.
 ##'
 ##' @export
-outpack_location_sharepoint <- R6::R6Class(
-  "outpack_location_sharepoint",
+orderly_location_sharepoint <- R6::R6Class(
+  "orderly_location_sharepoint",
 
   private = list(
     folder = NULL
@@ -20,13 +20,13 @@ outpack_location_sharepoint <- R6::R6Class(
     ##' @param url The base url of your Office365/Sharepoint site, such
     ##' as `https://myorg.sharepoint.com` (the `https://` prefix is required)
     ##'
-    ##' @param `site` Your site name on Sharepoint
+    ##' @param site Your site name on Sharepoint
     ##'
     ##' @param path The path within your site name where documents will
     ##' be stored (you may need `Shared Documents` even if Sharepoint
     ##' makes it look like `Documents`
     initialize = function(url, site, path) {
-      private$folder <- outpack_sharepoint_folder_cached(url, site, path)
+      private$folder <- orderly_sharepoint_folder_cached(url, site, path)
     },
 
     list = function() {
@@ -96,19 +96,19 @@ outpack_location_sharepoint <- R6::R6Class(
   ))
 
 
-outpack_sharepoint_client <- function(url) {
+orderly_sharepoint_client <- function(url) {
   spud::sharepoint$new(url) # nocov
 }
 
 
-outpack_sharepoint_folder <- function(url, site, path) {
-  client <- outpack_sharepoint_client(url)
+orderly_sharepoint_folder <- function(url, site, path) {
+  client <- orderly_sharepoint_client(url)
   folder <- tryCatch(
     client$folder(site, path, verify = TRUE),
     error = function(e)
       stop(sprintf("Error reading from %s:%s - %s",
                    site, path, e$message), call. = FALSE))
-  path <- "outpack.sharepoint"
+  path <- "orderly.sharepoint"
   exists <- tryCatch({
     folder$download(path)
     TRUE
@@ -118,12 +118,12 @@ outpack_sharepoint_folder <- function(url, site, path) {
   }
   if (nrow(folder$list()) > 0L) {
     stop(sprintf(
-      "Directory %s:%s cannot be used for outpack; contains other files",
+      "Directory %s:%s cannot be used for orderly; contains other files",
       site, path))
   }
   tmp <- tempfile()
   on.exit(unlink(tmp))
-  writeLines("outpack.sharepoint", tmp)
+  writeLines("orderly.sharepoint", tmp)
   folder$upload(tmp, path)
   folder$create("metadata")
   folder$create("files")
@@ -140,10 +140,10 @@ folder_read_path <- function(folder, path, read) {
 
 
 cache <- new.env(parent = emptyenv())
-outpack_sharepoint_folder_cached <- function(url, site, path) {
+orderly_sharepoint_folder_cached <- function(url, site, path) {
   key <- paste(url, site, path)
   if (is.null(cache[[key]])) {
-    cache[[key]] <- outpack_sharepoint_folder(url, site, path)
+    cache[[key]] <- orderly_sharepoint_folder(url, site, path)
   }
   cache[[key]]
 }
