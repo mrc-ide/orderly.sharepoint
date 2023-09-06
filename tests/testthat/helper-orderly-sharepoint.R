@@ -3,9 +3,8 @@ clear_cache <- function() {
 }
 
 
-create_mock_folder <- function(...,
-                               url = NULL, site = "mypath", path = "mysite") {
-  url <- url %||% sprintf("https://example.com/orderly/%s", random_str())
+create_mock_folder <- function(..., site = "mypath", path = "mysite") {
+  url <- sprintf("https://example.com/orderly/%s", random_str())
   key <- paste(url, site, path)
   folder <- list(...)
   cache[[key]] <- folder
