@@ -104,9 +104,10 @@ orderly_sharepoint_folder <- function(url, site, path) {
   client <- orderly_sharepoint_client(url)
   folder <- tryCatch(
     client$folder(site, path, verify = TRUE),
-    error = function(e)
+    error = function(e) {
       stop(sprintf("Error reading from %s:%s - %s",
-                   site, path, e$message), call. = FALSE))
+                   site, path, e$message), call. = FALSE)
+    })
   path_test <- "orderly.sharepoint"
   exists <- tryCatch({
     folder$download(path_test)
