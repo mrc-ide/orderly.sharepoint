@@ -58,8 +58,9 @@ orderly_location_sharepoint <- R6::R6Class(
     metadata = function(packet_ids) {
       vcapply(file.path("metadata", packet_ids), function(path_id) {
         folder_read_path(private$folder, path_id, read_string)
-      })
+      }, USE.NAMES = FALSE)
     },
+
 
     fetch_file = function(hash, dest) {
       src <- file.path("files", sub(":", "_", hash))
@@ -80,14 +81,12 @@ orderly_location_sharepoint <- R6::R6Class(
       private$folder$upload(src, dest)
     },
 
-    push_metadata = function(packet_id, root) {
-      hash <- orderly2:::get_metadata_hash(packet_id, root)
-      time <- orderly2:::time_to_num()
-      path <- file.path(root$path, ".outpack", "metadata", packet_id)
+    push_metadata = function(packet_id, hash, path) {
+      orderly2:::hash_validate_data(read_string(path), hash)
       private$folder$upload(path, file.path("metadata", packet_id))
       dat <- jsonlite::toJSON(
         list(packet = jsonlite::unbox(packet_id),
-             time = jsonlite::unbox(time),
+             time = jsonlite::unbox(as.numeric(Sys.time())),
              hash = jsonlite::unbox(hash)))
       tmp <- withr::local_tempfile()
       writeLines(dat, tmp)
@@ -108,9 +107,9 @@ orderly_sharepoint_folder <- function(url, site, path) {
     error = function(e)
       stop(sprintf("Error reading from %s:%s - %s",
                    site, path, e$message), call. = FALSE))
-  path <- "orderly.sharepoint"
+  path_test <- "orderly.sharepoint"
   exists <- tryCatch({
-    folder$download(path)
+    folder$download(path_test)
     TRUE
   }, error = function(e) FALSE)
   if (exists) {
@@ -124,7 +123,7 @@ orderly_sharepoint_folder <- function(url, site, path) {
   tmp <- tempfile()
   on.exit(unlink(tmp))
   writeLines("orderly.sharepoint", tmp)
-  folder$upload(tmp, path)
+  folder$upload(tmp, path_test)
   folder$create("metadata")
   folder$create("files")
   folder$create("known")
