@@ -1,6 +1,6 @@
 Package: orderly.sharepoint
 Title: Orderly Sharepoint Driver
-Version: 0.1.0
+Version: 1.99.0
 Authors@R: c(person("Rich", "FitzJohn", role = c("aut", "cre"),
                     email = "r.fitzjohn@imperial.ac.uk"),
              person("Imperial College of Science, Technology and Medicine",
