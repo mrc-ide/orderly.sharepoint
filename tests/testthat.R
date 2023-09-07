@@ -1,4 +1,4 @@
 library(testthat)
-library(outpack.sharepoint)
+library(orderly.sharepoint)
 
-test_check("outpack.sharepoint")
+test_check("orderly.sharepoint")
